@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016. Created by Leonard Meerwood for ITC209.
+ * No part of this may be used for your assignment.
+ */
+
 package com.meerwood.leonard.looktothestars.fragments;
 
 import android.support.v4.app.Fragment;
