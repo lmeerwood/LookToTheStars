@@ -6,12 +6,20 @@
 package com.meerwood.leonard.looktothestars.objects;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+
+import java.net.URI;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
+@RealmClass
 public class CelestialObject extends RealmObject {
+    @PrimaryKey
     private String name;
-    private Bitmap image;
+    private String image;
     private boolean favourite;
 
     public String getName() {
@@ -22,11 +30,11 @@ public class CelestialObject extends RealmObject {
         this.name = name;
     }
 
-    public Bitmap getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Bitmap image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

@@ -6,6 +6,8 @@
 package com.meerwood.leonard.looktothestars.objects;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
 /*
     Natural Objects store information for stars, constellations and planets.
@@ -13,6 +15,7 @@ import io.realm.RealmObject;
     that make them up are natural, therefore they fall under the natural category.
  */
 
+@RealmClass
 public class NaturalObject extends RealmObject {
     public interface Type{
         String CONSTELLATION = "constellation";
@@ -21,16 +24,29 @@ public class NaturalObject extends RealmObject {
     }
 
 
+    @PrimaryKey
+    private String id;
     private CelestialObject celestialObject;
     private double ra;      //Right ascension
     private double dec;     //declination
-    private Type type;      //Type of natural object
+    private String type;      //Type of natural object
 
-    public Type getType() {
+    public NaturalObject(){
+        celestialObject = null;
+    }
+
+    public NaturalObject (String name, String type){
+        celestialObject = new CelestialObject();
+        celestialObject.setName(name);
+        setType(type);
+        id = name + "-" + type;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 

@@ -1,13 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GridView layout based off of: -->
+<!-- https://developer.android.com/guide/topics/ui/layout/gridview.html -->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.meerwood.leonard.looktothestars.fragments.CelestialObjectGridFragment">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView
+        android:id="@+id/celestial_object_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:rrvLayoutType="Grid"
+        app:rrvGridLayoutSpanCount="2"
+        app:rrvSwipeToDelete="false"
+        app:rrvEmptyLayoutId="@layout/error_view"
+        />
 
 </FrameLayout>
