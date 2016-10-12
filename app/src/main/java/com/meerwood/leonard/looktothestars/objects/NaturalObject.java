@@ -5,6 +5,8 @@
 
 package com.meerwood.leonard.looktothestars.objects;
 
+import android.util.Log;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
@@ -38,6 +40,9 @@ public class NaturalObject extends RealmObject {
     public NaturalObject (String name, String type){
         celestialObject = new CelestialObject();
         celestialObject.setName(name);
+        String fileName = name.toLowerCase().replace(" ","_");
+        Log.d("Natural Object", fileName);
+        celestialObject.setImage(fileName);
         setType(type);
         id = name + "-" + type;
     }

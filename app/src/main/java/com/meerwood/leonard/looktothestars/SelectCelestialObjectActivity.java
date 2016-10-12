@@ -11,8 +11,6 @@ import com.meerwood.leonard.looktothestars.objects.ManMadeObject;
 import com.meerwood.leonard.looktothestars.objects.NaturalObject;
 import com.meerwood.leonard.looktothestars.objects.NaturalObject.Type;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,11 +33,13 @@ public class SelectCelestialObjectActivity extends AppCompatActivity {
                 .name("looktothestars.realm")
                 .schemaVersion(1)
                 .initialData(new initialTransaction())
-                .deleteRealmIfMigrationNeeded()
+                .deleteRealmIfMigrationNeeded() //Note, this is a bit hacky and should only be used for debugging
                 .build();
         Realm.setDefaultConfiguration(config);
     }
 
+
+    //This populates the database on the first time the app is run.
     private class initialTransaction implements Realm.Transaction {
 
         @Override
@@ -165,12 +165,32 @@ public class SelectCelestialObjectActivity extends AppCompatActivity {
                             "Vulpecula"
                             );
 
+
             for(String constellation: constellations){
                 no = new NaturalObject(constellation, Type.CONSTELLATION);
                 realm.copyToRealm(no);
             }
 
+            //Planets
+            //List taught to me by Mr. Stewart in the ninth grade science class.
+            //Also, I've included Pluto because in my heart, Pluto will always be a planet.
+            List<String> planets =
+                    Arrays.asList(
+                            "Mercury",
+                            "Venus",
+                            "Earth",
+                            "Mars",
+                            "Jupiter",
+                            "Saturn",
+                            "Uranus",
+                            "Neptune",
+                            "Pluto"
+                    );
 
+            for(String planet: planets){
+                no = new NaturalObject(planet, Type.PLANET);
+                realm.copyToRealm(no);
+            }
         }
     }
 }

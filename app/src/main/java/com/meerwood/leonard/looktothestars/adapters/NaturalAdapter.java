@@ -5,7 +5,10 @@
 
 package com.meerwood.leonard.looktothestars.adapters;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,5 +57,16 @@ public class NaturalAdapter extends RealmBasedRecyclerViewAdapter<NaturalObject,
     public void onBindRealmViewHolder(NaturalAdapter.ViewHolder viewHolder, int position) {
         final NaturalObject no = realmResults.get(position);
         viewHolder.celestialName.setText(no.getCelestialObject().getName());
+
+        Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
+                + "://"+ getContext().getPackageName()
+                + "/drawable/"
+                + no.getCelestialObject().getImage());
+        Picasso.with(getContext())
+                .load(uri)
+                .resize(150,150)
+                .centerInside()
+                .error(R.drawable.ara)
+                .into(viewHolder.celestialImage);
     }
 }
