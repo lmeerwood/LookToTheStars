@@ -27,41 +27,49 @@ public class NaturalObject extends RealmObject {
 
 
     @PrimaryKey
-    private String id;
-    private CelestialObject celestialObject;
+    private String name;
+    private String image;
     private double ra;      //Right ascension
     private double dec;     //declination
     private String type;      //Type of natural object
 
     public NaturalObject(){
-        celestialObject = null;
+
     }
 
     public NaturalObject (String name, String type){
-        celestialObject = new CelestialObject();
-        celestialObject.setName(name);
+        this.name = name;
         String fileName = name.toLowerCase().replace(" ","_");
-        Log.d("Natural Object", fileName);
-        celestialObject.setImage(fileName);
-        setType(type);
-        id = name + "-" + type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
+        this.image = fileName;
         this.type = type;
+        ra=0;
+        dec=0;
     }
 
-    //All the basic getters and setters for NaturalObject
-    public CelestialObject getCelestialObject() {
-        return celestialObject;
+    public NaturalObject (String name, String type, double ra, double dec){
+        this.name = name;
+        String fileName = name.toLowerCase().replace(" ","_");
+        this.image = fileName;
+        this.type = type;
+        this.ra = ra;
+        this.dec = dec;
+
     }
 
-    public void setCelestialObject(CelestialObject celestialObject) {
-        this.celestialObject = celestialObject;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public double getRa() {
@@ -78,5 +86,13 @@ public class NaturalObject extends RealmObject {
 
     public void setDec(double dec) {
         this.dec = dec;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -46,13 +46,12 @@ public class ManMadeAdapter extends RealmBasedRecyclerViewAdapter<ManMadeObject,
     @Override
     public ViewHolder onCreateRealmViewHolder(ViewGroup viewGroup, int viewType) {
         View v = inflater.inflate(R.layout.celestial_object_entry, viewGroup, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindRealmViewHolder(ViewHolder viewHolder, int position){
         final ManMadeObject mmo = realmResults.get(position);
-        viewHolder.celestialName.setText(mmo.getCelestialObject().getName());
+        viewHolder.celestialName.setText(mmo.getName());
     }
 }

@@ -16,28 +16,37 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class ManMadeObject extends RealmObject {
     @PrimaryKey
-    private String id;
-    private CelestialObject celestialObject;
+    private String name;
+    private String image;
+    private boolean favourite;
     private String twoLineElement;
 
     public ManMadeObject() {
-        celestialObject = null;
-        id = "error";
+        name = "error";
     }
 
-    public ManMadeObject (String name){
-        celestialObject = new CelestialObject();
-        celestialObject.setName(name);
-        id = name + "-manMade";
+    public String getName() {
+        return name;
     }
 
-    //Getter and setters for Man Made Objects
-    public CelestialObject getCelestialObject() {
-        return celestialObject;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setCelestialObject(CelestialObject celestialObject) {
-        this.celestialObject = celestialObject;
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 
     public String getTwoLineElement() {
@@ -46,5 +55,10 @@ public class ManMadeObject extends RealmObject {
 
     public void setTwoLineElement(String twoLineElement) {
         this.twoLineElement = twoLineElement;
+    }
+
+    public ManMadeObject (String name){
+        this.name = name ;
+
     }
 }

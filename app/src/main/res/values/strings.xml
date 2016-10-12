@@ -12,4 +12,6 @@
     <string name="satellites">Satellites</string>
 
     <string name="error">An error has occured. Please try restarting the app.</string>
+
+    <string name="loading">Calculating Celestial Object position</string>
 </resources>
