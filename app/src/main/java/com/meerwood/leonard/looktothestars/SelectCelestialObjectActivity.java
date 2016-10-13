@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.meerwood.leonard.looktothestars.adapters.PagerAdapter;
+import com.meerwood.leonard.looktothestars.helpers.CelestialObjectLocator;
+import com.meerwood.leonard.looktothestars.helpers.PlanetCoordinates;
 import com.meerwood.leonard.looktothestars.objects.ManMadeObject;
 import com.meerwood.leonard.looktothestars.objects.NaturalObject;
 import com.meerwood.leonard.looktothestars.objects.NaturalObject.Type;
@@ -207,7 +209,6 @@ public class SelectCelestialObjectActivity extends AppCompatActivity {
 
 
             for(NaturalObject constellation: constellations){
-                Log.d("Initialization", "Adding: " + constellation.getName());
                 realm.copyToRealm(constellation);
 
 
@@ -226,10 +227,20 @@ public class SelectCelestialObjectActivity extends AppCompatActivity {
                             "Saturn",
                             "Uranus",
                             "Neptune",
-                            "Pluto"
+                            "Pluto",
+                            "Moon",
+                            "Sun"
                     );
 
+            PlanetCoordinates pc = CelestialObjectLocator
+                    .getCurrentPlanetCoordinates(getApplicationContext());
+            NaturalObject p;
+            int i = 0;
             for(String planet: planets){
+                double[] raAndDec;
+                raAndDec = CelestialObjectLocator.cartesianToRaAndDec(pc.planet_r[i++]);
+                p = new NaturalObject(planet,Type.PLANET,raAndDec[0], raAndDec[1]);
+                realm.copyToRealm(p);
             }
         }
     }

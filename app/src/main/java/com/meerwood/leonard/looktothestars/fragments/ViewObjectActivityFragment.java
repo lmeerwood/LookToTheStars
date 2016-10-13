@@ -138,6 +138,8 @@ public class ViewObjectActivityFragment extends Fragment implements SensorEventL
             NaturalObject no = realm.where(NaturalObject.class)
                     .equalTo("name", name)
                     .findFirst();
+            Log.d("Object Viewer", "Current object is: " + no.getName() + ", ra: " + no.getRa()
+                + ", dec: " + no.getDec());
             double [] coordinates = CelestialObjectLocator.findCelestialObject(no,
                     currentLocation.getLatitude(),
                     currentLocation.getLongitude());
@@ -245,7 +247,6 @@ public class ViewObjectActivityFragment extends Fragment implements SensorEventL
         }
 
         if (Math.abs(bearing - lastBearing) > 1.5) {
-            Log.d("Sensor Changed", "Bearing is now: " + bearing);
 
             compassView.setBearing((float) bearing);
 

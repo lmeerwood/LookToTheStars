@@ -90,9 +90,6 @@ public class CelestialObjectGridFragment extends Fragment {
                                 .equalTo("type", NaturalObject.Type.STAR)
                                 .findAll();
                 stars = stars.sort("name");
-                for(NaturalObject star : stars) {
-                    Log.d("Debug Stars", star.getName());
-                }
                 naturalAdapter = new NaturalAdapter(this.getContext(), stars, true, true);
                 realmRecyclerView = (RealmRecyclerView) view.findViewById(R.id.celestial_object_view);
                 realmRecyclerView.setAdapter(naturalAdapter);
@@ -103,9 +100,6 @@ public class CelestialObjectGridFragment extends Fragment {
                                 .equalTo("type", NaturalObject.Type.CONSTELLATION)
                                 .findAll();
                 constellations = constellations.sort("name");
-                for(NaturalObject constellation : constellations) {
-                    Log.d("Debug Constellation", constellation.getName());
-                }
                 naturalAdapter = new NaturalAdapter(this.getContext(), constellations, true, true);
                 realmRecyclerView = (RealmRecyclerView) view.findViewById(R.id.celestial_object_view);
                 realmRecyclerView.setAdapter(naturalAdapter);
@@ -115,9 +109,6 @@ public class CelestialObjectGridFragment extends Fragment {
                         realm.where(NaturalObject.class)
                                 .equalTo("type", NaturalObject.Type.PLANET)
                                 .findAll();
-                for(NaturalObject planet : planets) {
-                    Log.d("Debug Planet", planet.getName());
-                }
                 naturalAdapter = new NaturalAdapter(this.getContext(), planets, true, true);
                 realmRecyclerView = (RealmRecyclerView) view.findViewById(R.id.celestial_object_view);
                 realmRecyclerView.setAdapter(naturalAdapter);

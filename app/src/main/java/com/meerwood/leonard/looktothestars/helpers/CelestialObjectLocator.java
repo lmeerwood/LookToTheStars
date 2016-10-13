@@ -6,6 +6,9 @@
 package com.meerwood.leonard.looktothestars.helpers;
 
 
+import android.content.Context;
+import android.util.Log;
+
 import com.meerwood.leonard.looktothestars.objects.ManMadeObject;
 import com.meerwood.leonard.looktothestars.objects.NaturalObject;
 
@@ -42,6 +45,7 @@ public class CelestialObjectLocator {
         int minute = now.get(Calendar.MINUTE);
         int second = now.get(Calendar.SECOND);
 
+        /*
         if ((month == 1) || (month == 2)) {
             year -= 1;
             month += 12;
@@ -54,6 +58,23 @@ public class CelestialObjectLocator {
 
         //days since J2000.0
         double jd = b + c + d - 730550.5 + day + (hour + minute/60.0 + second/3600.0)/24.0;
+        */
+
+        //double extra = (100.0 * year) + month - 190002.5;
+        /*double jd = (367.0 * year) -
+                (Math.floor(7.0 * (year + Math.floor((month + 9.0) / 12.0)) / 4.0)) +
+                Math.floor((275.0 * month) / 9.0) +
+                day + ((hour + ((minute + (second / 60.0)) / 60.0)) / 24.0) +
+                1721013.5 - ((0.5 * extra) / Math.abs(extra)) + 0.5;
+                */
+        double millis = System.currentTimeMillis();
+        double days = millis/(1000*60*60*24);
+        double jd = days + 2440587.500000;
+        /*double jd = day - 32075 + 1461*( year + 4800 + (month - 14)/12.0)/4.0
+                + 367 * (month -2 - (month - 14)/(12.0*12.0))/12.0
+                - 3*((year + 4900 + (month - 14)/12.0)/100.0)/4.0;*/
+
+        Log.d("celObjLoc", "JulTime is: " + jd);
 
         //centuries since J2000.0
         double jt = jd/36525.0;
@@ -103,5 +124,51 @@ public class CelestialObjectLocator {
 
     public static double[] findCelestialObject(ManMadeObject manMadeObject){
         return new double[0];
+    }
+
+    public static PlanetCoordinates getCurrentPlanetCoordinates(Context context){
+        PlanetCoordinates pc = new PlanetCoordinates(context);
+
+        Calendar now = Calendar.getInstance();
+        now.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+
+        //This section calculates the side real time based on longitude and current time.
+        int year = now.get(Calendar.YEAR);
+        int month = now.get(Calendar.MONTH);
+        int day = now.get(Calendar.DAY_OF_MONTH);
+        int hour = now.get(Calendar.HOUR);
+        int minute = now.get(Calendar.MINUTE);
+        int second = now.get(Calendar.SECOND);
+
+        if ((month == 1) || (month == 2)) {
+            year -= 1;
+            month += 12;
+        }
+
+        double a =  Math.floor(year/100);
+        double b = 2 - a + Math.floor(a/4);
+        double c = Math.floor(365.25*year);
+        double d = Math.floor(20.6001*(month+1));
+
+        //days since J2000.0
+        double jd = b + c + d - 730550.5 + day + (hour + minute/60.0 + second/3600.0)/24.0;
+
+        pc.planetary_ephemeris(jd);
+
+        return pc;
+    }
+
+    public static double[] cartesianToRaAndDec(double[] cart){
+        //https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cartesian_coordinates
+        //r = sqrt(x^2 + y^2 + z^2)
+        Log.d("CelObjLoc.carToRaAndDec", "x = "  + cart[0] + ", y = " + cart[1] + ", z = " +cart[3]);
+        double radius = Math.sqrt(cart[0]*cart[0] + cart[1]*cart[1] + cart[2]*cart[2]);
+
+        double[] raAndDec = new double[2];
+        raAndDec[0] = Math.atan2(cart[1],cart[0]);
+        raAndDec[1] = Math.acos(cart[2]/radius);
+
+        return raAndDec;
     }
 }
