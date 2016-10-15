@@ -22,7 +22,7 @@ public class ViewObjectActivity extends AppCompatActivity {
 
         String name = getIntent().getExtras().getString("NAME");
 
-        toolbar.setTitle(name);
+        setTitle(name);
 
         ViewObjectActivityFragment voaf = new ViewObjectActivityFragment();
         voaf.setArguments(getIntent().getExtras());

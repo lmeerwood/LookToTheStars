@@ -12,52 +12,53 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.meerwood.leonard.looktothestars.fragments.ViewObjectActivityFragment">
 
-    <RelativeLayout
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_favourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        fab:fab_colorNormal="@color/white"
+        fab:fab_colorPressed="@color/white_pressed"
+        fab:fab_size="mini"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <com.meerwood.leonard.looktothestars.view.CompassView
+        android:id="@+id/compass"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="21dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="45dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-        <LinearLayout
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="52dp">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:id="@+id/declination_text"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/text"
+            android:layout_marginTop="27dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/declination_text"
-                android:layout_marginTop="27dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/warning_text" />
-
-        </LinearLayout>
-
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_favourite"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_colorPressed="@color/white_pressed"
-            fab:fab_size="mini"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_marginTop="15dp"
+            android:textColor="@color/text"
+            android:id="@+id/warning_text" />
 
-        <com.meerwood.leonard.looktothestars.view.CompassView
-            android:id="@+id/compass"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginBottom="21dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+    </LinearLayout>
 
-    </RelativeLayout>
 
 </RelativeLayout>

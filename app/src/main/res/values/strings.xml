@@ -11,7 +11,11 @@
     <string name="planets">Planets</string>
     <string name="satellites">Satellites</string>
 
-    <string name="error">An error has occured. Please try restarting the app.</string>
+    <string name="error">An error has occurred. Please try restarting the app.</string>
 
     <string name="loading">Calculating Celestial Object position</string>
+    <string name="need_gps_title" >GPS Necessary</string>
+    <string name="need_gps_message" >GPS is needed to find objects in the night sky correctly.
+        We will now return to the previous menu.</string>
+    <string name="ok">OK</string>
 </resources>

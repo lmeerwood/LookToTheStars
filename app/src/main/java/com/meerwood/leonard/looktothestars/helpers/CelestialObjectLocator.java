@@ -41,6 +41,7 @@ public class CelestialObjectLocator {
 
         double millisSinceEpoch = System.currentTimeMillis();
         double daysSinceEpoch = millisSinceEpoch/(1000*60*60*24);
+
         // julianDate daysSinceLinuxEpoch + linuxEpochInJulianDay - J2000 offset
         double jd = daysSinceEpoch + 2440587.500000 - 2451546;
 
@@ -108,6 +109,12 @@ public class CelestialObjectLocator {
         return pc;
     }
 
+
+    //This is to convert the planets' cartesian values to the heading and altitude. However, this
+    //is completly wrong as it makes the assumption that earth is [0,0,0], when in fact the sun is.
+    //It also doesn't take into account earth's "wobble" or its tilt. Due to time constraints I was
+    //unfortunately unable to figure out how to conver these properly. I feel the proper way to convert
+    //it lies in the madness of equations on this page somewhere: http://www.stjarnhimlen.se/comp/ppcomp.html
     public static double[] cartesianToRaAndDec(double[] cart){
         //https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cartesian_coordinates
         //r = sqrt(x^2 + y^2 + z^2)

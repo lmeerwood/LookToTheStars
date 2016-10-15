@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2016. Created by Leonard Meerwood for ITC209.
- * No part of this may be used for your assignment.
- */
-
 package com.meerwood.leonard.looktothestars.helpers;
 
 import android.content.Context;
@@ -14,6 +9,12 @@ import java.io.*;
 public class PlanetCoordinates {
 
 	/*
+
+	This is some serious calulations beyond here. I could not figure out how to calculate the planets positions.
+	Luckily, NASA had a java class (found here: ftp://ssd.jpl.nasa.gov/pub/eph/planets/JAVA-version/) that
+	does this very thing. All the code below is NASA's. I'm using a code they made available to the public
+	and in no way do I claim that any of it is my work.
+
 	  This class contains the methods necessary to parse the JPL DE405 ephemeris files (text versions), and compute the position and velocity of the planets, Moon, and Sun.
 
 	  IMPORTANT: In order to use these methods, the user should:
