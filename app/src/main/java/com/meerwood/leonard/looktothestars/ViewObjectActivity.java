@@ -20,12 +20,14 @@ public class ViewObjectActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        String name = getIntent().getExtras().getString("NAME");
+
+        toolbar.setTitle(name);
 
         ViewObjectActivityFragment voaf = new ViewObjectActivityFragment();
         voaf.setArguments(getIntent().getExtras());
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
 
         transaction.replace(R.id.loading, voaf);
 

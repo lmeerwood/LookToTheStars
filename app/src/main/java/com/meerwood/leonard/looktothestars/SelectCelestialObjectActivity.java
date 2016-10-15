@@ -9,7 +9,6 @@ import android.util.Log;
 import com.meerwood.leonard.looktothestars.adapters.PagerAdapter;
 import com.meerwood.leonard.looktothestars.helpers.CelestialObjectLocator;
 import com.meerwood.leonard.looktothestars.helpers.PlanetCoordinates;
-import com.meerwood.leonard.looktothestars.objects.ManMadeObject;
 import com.meerwood.leonard.looktothestars.objects.NaturalObject;
 import com.meerwood.leonard.looktothestars.objects.NaturalObject.Type;
 
@@ -36,7 +35,7 @@ public class SelectCelestialObjectActivity extends AppCompatActivity {
                 .name("looktothestars.realm")
                 .schemaVersion(1)
                 .initialData(new initialTransaction())
-                .deleteRealmIfMigrationNeeded() //Note, this is a bit hacky and should only be used for debugging
+                .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
     }
@@ -47,10 +46,6 @@ public class SelectCelestialObjectActivity extends AppCompatActivity {
 
         @Override
         public void execute(Realm realm) {
-            //Man made objects
-            ManMadeObject mmo = new ManMadeObject("ISS");
-            realm.copyToRealm(mmo);
-
             //Stars
             //List found from space.com
             //http://www.space.com/21640-star-luminosity-and-magnitude.html
@@ -236,6 +231,7 @@ public class SelectCelestialObjectActivity extends AppCompatActivity {
                     .getCurrentPlanetCoordinates(getApplicationContext());
             NaturalObject p;
             int i = 0;
+            Log.d("Planet Adding", "adding planets");
             for(String planet: planets){
                 double[] raAndDec;
                 raAndDec = CelestialObjectLocator.cartesianToRaAndDec(pc.planet_r[i++]);

@@ -13,9 +13,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.icu.text.DecimalFormat;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -25,7 +27,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.meerwood.leonard.looktothestars.R;
 import com.meerwood.leonard.looktothestars.helpers.CelestialObjectLocator;
 import com.meerwood.leonard.looktothestars.objects.NaturalObject;
@@ -59,8 +63,12 @@ public class ViewObjectActivityFragment extends Fragment implements SensorEventL
     private GeomagneticField geomagneticField;
     private double bearing = 0;
     private double lastBearing = 0;
+
     private TextView textViewObjectText;
     private CompassView compassView;
+    private TextView elevationText;
+    private TextView warningText;
+    private FloatingActionButton fabFavourite;
 
     private double azimuthOffset = 0;
 
@@ -76,8 +84,11 @@ public class ViewObjectActivityFragment extends Fragment implements SensorEventL
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_view_object, container, false);
-        textViewObjectText = (TextView) view.findViewById(R.id.object_text);
         compassView = (CompassView) view.findViewById(R.id.compass);
+        elevationText = (TextView) view.findViewById(R.id.declination_text);
+        warningText = (TextView) view.findViewById(R.id.warning_text);
+        fabFavourite = (FloatingActionButton) view.findViewById(R.id.fab_favourite);
+
         name = getArguments().getString("NAME");
         type = getArguments().getString("TYPE");
 
@@ -87,7 +98,7 @@ public class ViewObjectActivityFragment extends Fragment implements SensorEventL
     @Override
     public void onStart() {
         super.onStart();
-        Context context = getContext();
+        final Context context = getContext();
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         sensorGravity = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -98,14 +109,11 @@ public class ViewObjectActivityFragment extends Fragment implements SensorEventL
         sensorManager.registerListener(this, sensorMagnetic,
                 SensorManager.SENSOR_DELAY_GAME);
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(getContext()
+                , Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext()
+                , Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            //TODO request permissions
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -122,7 +130,7 @@ public class ViewObjectActivityFragment extends Fragment implements SensorEventL
                 currentLocation = networkLocation;
             } else {
                 currentLocation = new Location(FIXED);
-                currentLocation.setAltitude(1);
+                currentLocation.setAltitude(0);
                 currentLocation.setLatitude(0);
                 currentLocation.setLongitude(0);
             }
@@ -131,20 +139,74 @@ public class ViewObjectActivityFragment extends Fragment implements SensorEventL
         }
 
 
-        Realm realm = Realm.getDefaultInstance();
-        if (type.equals(NaturalObject.Type.CONSTELLATION) ||
-                type.equals(NaturalObject.Type.PLANET) ||
-                type.equals(NaturalObject.Type.STAR)) {
-            NaturalObject no = realm.where(NaturalObject.class)
-                    .equalTo("name", name)
-                    .findFirst();
-            Log.d("Object Viewer", "Current object is: " + no.getName() + ", ra: " + no.getRa()
-                + ", dec: " + no.getDec());
-            double [] coordinates = CelestialObjectLocator.findCelestialObject(no,
-                    currentLocation.getLatitude(),
-                    currentLocation.getLongitude());
-            azimuthOffset = coordinates[1];
+        final Realm realm = Realm.getDefaultInstance();
+
+        NaturalObject no = realm.where(NaturalObject.class)
+                .equalTo("name", name)
+                .findFirst();
+        double [] coordinates = CelestialObjectLocator.findCelestialObject(no,
+                currentLocation.getLatitude(),
+                currentLocation.getLongitude());
+        azimuthOffset = coordinates[1];
+
+        //Display elevation. If elevation is below horizon, display warning.
+        //If SDK is below 24 elevation shown with out deciaml places.
+
+        elevationText.setText(String.format("Elevation is: %.2f°", no.getDec()));
+
+        if (type.equals(NaturalObject.Type.PLANET)){
+            warningText.setText("Warning: Planets do not track properly at the moment. Will be revised in future release.");
+        } else if (no.getDec() < 0) {
+            warningText.setText("Warning: the object is currently below the horizon. You won't be able to see it.");
         }
+
+        //Show if celestial object is favourited.
+        if (no.isFavourite()){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                fabFavourite.setImageDrawable(context.getDrawable(R.drawable.ic_star_black_24dp));
+            } else {
+                fabFavourite.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                fabFavourite.setImageDrawable(context.getDrawable(R.drawable.ic_star_border_black_24dp));
+            } else {
+                fabFavourite.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
+            }
+        }
+
+        fabFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Retrieve Natural Object
+                NaturalObject no = realm.where(NaturalObject.class)
+                        .equalTo("name", name).findFirst();
+
+                //Change favourite value;
+                boolean isFavourite = no.isFavourite();
+                realm.beginTransaction();
+                no.setFavourite(!isFavourite);
+                realm.commitTransaction();
+
+                //Change icon
+                if (!isFavourite){
+                    Toast.makeText(context, "Added to Favourites!", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        fabFavourite.setImageDrawable(context.getDrawable(R.drawable.ic_star_black_24dp));
+                    } else {
+                        fabFavourite.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                    }
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        fabFavourite.setImageDrawable(context.getDrawable(R.drawable.ic_star_border_black_24dp));
+                    } else {
+                        fabFavourite.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
+                    }
+                }
+            }
+        });
+
+
 
     }
 

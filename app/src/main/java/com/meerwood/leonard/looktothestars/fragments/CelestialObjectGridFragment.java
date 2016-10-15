@@ -47,20 +47,12 @@ public class CelestialObjectGridFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CelestialObjectGridFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CelestialObjectGridFragment newInstance(String param1, String param2) {
+
+    public static CelestialObjectGridFragment newInstance(String name, String type) {
         CelestialObjectGridFragment fragment = new CelestialObjectGridFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_CELESTIAL_NAME, param1);
-        args.putString(ARG_CELESTIAL_TYPE, param2);
+        args.putString(ARG_CELESTIAL_NAME, name);
+        args.putString(ARG_CELESTIAL_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -110,6 +102,16 @@ public class CelestialObjectGridFragment extends Fragment {
                                 .equalTo("type", NaturalObject.Type.PLANET)
                                 .findAll();
                 naturalAdapter = new NaturalAdapter(this.getContext(), planets, true, true);
+                realmRecyclerView = (RealmRecyclerView) view.findViewById(R.id.celestial_object_view);
+                realmRecyclerView.setAdapter(naturalAdapter);
+                break;
+            case "favourites":
+                RealmResults<NaturalObject> favs =
+                        realm.where(NaturalObject.class)
+                                .equalTo("favourite", true)
+                                .findAll()
+                                .sort("name");
+                naturalAdapter = new NaturalAdapter(this.getContext(), favs, true, true);
                 realmRecyclerView = (RealmRecyclerView) view.findViewById(R.id.celestial_object_view);
                 realmRecyclerView.setAdapter(naturalAdapter);
                 break;

@@ -147,6 +147,7 @@ the "main" method, which contains the call to "planetary_ephemeris".
                 planet_r[i][j] = ephemeris_r[j];
                 planet_rprime[i][j] = ephemeris_rprime[j];
             }
+            Log.d("PlanetCoor", "X = " + planet_r[i][0] + ", Y = " + planet_r[i][1] + ", Z = " + planet_r[i][2]);
         }
 
 		/*  The positions and velocities of the Earth and Moon are found indirectly.  We already have the pos/vel of the Earth-Moon barycenter (i = 3).  We have also calculated planet_r(10,j), a geocentric vector from the Earth to the Moon.  Using the ratio of masses, we get vectors from the Earth-Moon barycenter to the Moon and to the Earth.  */

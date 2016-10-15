@@ -32,6 +32,7 @@ public class NaturalObject extends RealmObject {
     private double ra;      //Right ascension
     private double dec;     //declination
     private String type;      //Type of natural object
+    private boolean favourite;
 
     public NaturalObject(){
 
@@ -44,6 +45,7 @@ public class NaturalObject extends RealmObject {
         this.type = type;
         ra=0;
         dec=0;
+        favourite = false;
     }
 
     public NaturalObject (String name, String type, double ra, double dec){
@@ -53,6 +55,7 @@ public class NaturalObject extends RealmObject {
         this.type = type;
         this.ra = ra;
         this.dec = dec;
+        favourite = false;
 
     }
 
@@ -94,5 +97,13 @@ public class NaturalObject extends RealmObject {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 }

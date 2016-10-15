@@ -34,7 +34,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return CelestialObjectGridFragment.newInstance("Planets","planets");
             case 3:
-                return CelestialObjectGridFragment.newInstance("ManMade","manmade");
+                return CelestialObjectGridFragment.newInstance("Favourites","favourites");
             default:
                 return null;
         }
@@ -50,7 +50,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return "Planets";
             case 3:
-                return "Man-Made";
+                return "Favourites";
             default:
                 return null;
         }
