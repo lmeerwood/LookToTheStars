@@ -166,16 +166,17 @@ public class ViewObjectActivityFragment extends Fragment implements SensorEventL
                 currentLocation.getLatitude(),
                 currentLocation.getLongitude());
         azimuthOffset = coordinates[1];
+        double altitude = coordinates[0];
 
         //Display elevation. If elevation is below horizon, display warning.
         //If SDK is below 24 elevation shown with out deciaml places.
 
-        elevationText.setText(String.format("Elevation is: %.2f°", no.getDec()));
+        elevationText.setText(String.format(getString(R.string.elevation_view_frag), altitude));
 
         if (type.equals(NaturalObject.Type.PLANET)){
-            warningText.setText("Warning: Planets do not track properly at the moment. Will be revised in future release.");
+            warningText.setText(R.string.error_planet);
         } else if (no.getDec() < 0) {
-            warningText.setText("Warning: the object is currently below the horizon. You won't be able to see it.");
+            warningText.setText(R.string.error_horizon);
         }
 
         //Show if celestial object is favourited.

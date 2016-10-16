@@ -18,4 +18,7 @@
     <string name="need_gps_message" >GPS is needed to find objects in the night sky correctly.
         We will now return to the previous menu.</string>
     <string name="ok">OK</string>
+    <string name="elevation_view_frag">Elevation is: %.2f°</string>
+    <string name="error_planet">Warning: Planets do not track properly at the moment. Will be revised in future release.</string>
+    <string name="error_horizon">Warning: the object is currently below the horizon. You won\'t be able to see it.</string>
 </resources>

@@ -71,6 +71,8 @@ public class NaturalAdapter extends RealmBasedRecyclerViewAdapter<NaturalObject,
             .centerInside()
             .error(R.drawable.ara)
             .into(viewHolder.celestialImage);
+
+        //Launch new activity with
         viewHolder.celestialImage.setOnClickListener(
             new View.OnClickListener() {
                 @Override
